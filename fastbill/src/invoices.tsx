@@ -1,15 +1,17 @@
-import { getPreferenceValues, Icon, List } from "@raycast/api";
+import { Action, ActionPanel, getPreferenceValues, Icon, List, useNavigation } from "@raycast/api";
 
 import { useState } from "react";
+import { MarkInvoiceAsPaid } from "./components/MarkInvoiceAsPaid";
 import { OpenPreferences } from "./components/OpenPreferences";
 import { useFastbillClient } from "./hooks/useFastbillClient";
 import { FastbillPreferences } from "./types/FastbillPreferences";
-import { toInvoiceListItems } from "./utils/invoiceData";
+import { getInvoicesGroupedByMonth, toInvoiceListItems } from "./utils/invoiceData";
 
 export default function Command() {
   const [searchText, setSearchText] = useState("");
+  const { push } = useNavigation();
 
-  const { data, isLoading } = useFastbillClient().getInvoices();
+  const { data, isLoading, revalidate } = useFastbillClient().getInvoices();
 
   const preferences = getPreferenceValues<FastbillPreferences>();
   if (!preferences.apiKey || !preferences.email) {
@@ -23,27 +25,43 @@ export default function Command() {
       listItem.paidState.title.toLowerCase().includes(searchText.toLowerCase()),
   );
 
+  const groupedInvoices = getInvoicesGroupedByMonth(filteredInvoices ?? []);
+  const monthNames = Object.getOwnPropertyNames(groupedInvoices);
   return (
     <List isLoading={isLoading} onSearchTextChange={setSearchText}>
       {filteredInvoices && (
-        <List.Section title={`Last ${filteredInvoices.length} invoices`}>
-          {filteredInvoices.map((invoice) => (
-            <List.Item
-              key={invoice.id}
-              icon={Icon.ArrowRightCircle}
-              title={invoice.title}
-              subtitle={invoice.subtitle}
-              accessories={[
-                {
-                  tag: {
-                    value: invoice.paidState.title,
-                    color: invoice.paidState.color,
-                  },
-                },
-              ]}
-            />
+        <>
+          {monthNames.map((month) => (
+            <List.Section key={month} title={`${month} (${groupedInvoices[month].length} invoices)`}>
+              {groupedInvoices[month].map((invoice) => (
+                <List.Item
+                  key={invoice.id}
+                  icon={Icon.ArrowRightCircle}
+                  title={invoice.title}
+                  subtitle={invoice.subtitle}
+                  accessories={[
+                    {
+                      tag: {
+                        value: invoice.paidState.title,
+                        color: invoice.paidState.color,
+                      },
+                    },
+                  ]}
+                  actions={
+                    <ActionPanel>
+                      {invoice.paidState.title !== "PAID" && (
+                        <Action
+                          title={`Mark as paid`}
+                          onAction={() => push(<MarkInvoiceAsPaid invoice={invoice} onMarkedAsPaid={revalidate} />)}
+                        />
+                      )}
+                    </ActionPanel>
+                  }
+                />
+              ))}
+            </List.Section>
           ))}
-        </List.Section>
+        </>
       )}
     </List>
   );
