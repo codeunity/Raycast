@@ -1,5 +1,5 @@
 import { Color } from "@raycast/api";
-import { orderBy } from "es-toolkit";
+import { orderBy, sum } from "es-toolkit";
 import { DateTime } from "luxon";
 import { Invoice, InvoiceApiResponse } from "../types/Invoice";
 
@@ -56,4 +56,9 @@ export const getInvoicesGroupedByMonth = (invoices: InvoiceListItem[]) => {
     },
     {} as Record<string, InvoiceListItem[]>,
   );
+};
+
+export const getTotal = (invoices: InvoiceListItem[]) => {
+  const total = sum(invoices.map((x) => x.data.TOTAL)) - sum(invoices.map((x) => x.data.VAT_TOTAL));
+  return `${total.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€`;
 };

@@ -5,7 +5,7 @@ import { MarkInvoiceAsPaid } from "./components/MarkInvoiceAsPaid";
 import { OpenPreferences } from "./components/OpenPreferences";
 import { useFastbillClient } from "./hooks/useFastbillClient";
 import { FastbillPreferences } from "./types/FastbillPreferences";
-import { getInvoicesGroupedByMonth, toInvoiceListItems } from "./utils/invoiceData";
+import { getInvoicesGroupedByMonth, getTotal, toInvoiceListItems } from "./utils/invoiceData";
 
 export default function Command() {
   const [searchText, setSearchText] = useState("");
@@ -32,7 +32,7 @@ export default function Command() {
       {filteredInvoices && (
         <>
           {monthNames.map((month) => (
-            <List.Section key={month} title={`${month} (${groupedInvoices[month].length} invoices)`}>
+            <List.Section key={month} title={`${month} - ${getTotal(groupedInvoices[month])}`}>
               {groupedInvoices[month].map((invoice) => (
                 <List.Item
                   key={invoice.id}
