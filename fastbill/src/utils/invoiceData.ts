@@ -23,9 +23,7 @@ const getPaidState = (invoice: Invoice) => {
     : { title: "PAID", color: Color.Green };
 };
 
-export const toInvoiceListItems = (
-  apiInvoices?: InvoiceApiResponse,
-): InvoiceListItem[] => {
+export const toInvoiceListItems = (apiInvoices?: InvoiceApiResponse): InvoiceListItem[] => {
   if (!apiInvoices) return [];
 
   const invoiceListItems = apiInvoices.RESPONSE.INVOICES.map(

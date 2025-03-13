@@ -1,9 +1,4 @@
-import {
-  Action,
-  ActionPanel,
-  Detail,
-  openExtensionPreferences,
-} from "@raycast/api";
+import { Action, ActionPanel, Detail, openExtensionPreferences } from "@raycast/api";
 
 export const OpenPreferences = () => {
   const markdown =
@@ -14,10 +9,7 @@ export const OpenPreferences = () => {
       markdown={markdown}
       actions={
         <ActionPanel>
-          <Action
-            title="Open Extension Preferences"
-            onAction={openExtensionPreferences}
-          />
+          <Action title="Open Extension Preferences" onAction={openExtensionPreferences} />
         </ActionPanel>
       }
     />
