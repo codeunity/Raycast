@@ -31,9 +31,9 @@ export const useFastbillClient = () => {
       },
       body: JSON.stringify({
         SERVICE: "invoice.get",
-        LIMIT: 30,
+        LIMIT: 50,
         FILTER: {
-          START_DATE: DateTime.now().minus({ month: 2 }).toFormat("yyyy-MM-dd"),
+          START_DATE: DateTime.now().minus({ month: 2 }).set({ day: 1 }).toFormat("yyyy-MM-dd"),
         },
       }),
     });
