@@ -24,24 +24,21 @@ const getSubTitle = (logItem: AccessLogItem) => {
 };
 
 export const groupByComponent = (accessLogs: AccessLogItem[]): ComponentGroupedAccessLog => {
-  return accessLogs.reduce(
-    (acc, item) => {
-      const componentTitle = item.data.component.title;
-      const listItem: AccessLogListItem = {
-        id: item.id,
-        title: getTitle(item),
-        subtitle: getSubTitle(item),
-        date: DateTime.fromISO(item.occurredAt),
-        data: item.data,
-      };
+  return accessLogs.reduce<{ [key: string]: AccessLogListItem[] }>((acc, item) => {
+    const componentTitle = item.data.component.title;
+    const listItem: AccessLogListItem = {
+      id: item.id,
+      title: getTitle(item),
+      subtitle: getSubTitle(item),
+      date: DateTime.fromISO(item.occurredAt),
+      data: item.data,
+    };
 
-      if (!acc[componentTitle]) {
-        acc[componentTitle] = [];
-      }
-      acc[componentTitle].push(listItem);
+    if (!acc[componentTitle]) {
+      acc[componentTitle] = [];
+    }
+    acc[componentTitle].push(listItem);
 
-      return acc;
-    },
-    {} as { [key: string]: AccessLogListItem[] },
-  );
+    return acc;
+  }, {});
 };

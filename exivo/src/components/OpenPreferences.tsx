@@ -2,7 +2,7 @@ import { Action, ActionPanel, Detail, openExtensionPreferences } from "@raycast/
 
 export const OpenPreferences = () => {
   const markdown =
-    "## Configuration incomplete\nClient ID or Client Secret is missing. Please add your Exivo credentials in the extension preferences.";
+    "## Configuration incomplete\nSystem ID, Client ID or Client Secret is missing. Please add your exivo credentials in the extension preferences.";
 
   return (
     <Detail

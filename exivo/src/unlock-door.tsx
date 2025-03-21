@@ -28,7 +28,7 @@ export default function Command() {
               title={exivoComponent.identifier}
               subtitle={{
                 value: getDoorModeTitle(exivoComponent.mode),
-                tooltip: "Modus",
+                tooltip: "Mode",
               }}
               actions={
                 <ActionPanel>
