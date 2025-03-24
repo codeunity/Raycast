@@ -40,7 +40,7 @@ export default function Command() {
                           revalidateComponents();
                         });
                       }}
-                      title="Permanent Open Mode"
+                      title="Activate Permanent Open Mode"
                     />
                   ) : (
                     <Action
@@ -49,7 +49,7 @@ export default function Command() {
                           revalidateComponents();
                         });
                       }}
-                      title="Normal Mode"
+                      title="Activate Normal Mode"
                     />
                   )}
                 </ActionPanel>

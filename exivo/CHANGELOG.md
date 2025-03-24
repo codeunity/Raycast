@@ -1,3 +1,5 @@
-# exivo Changelog
+# Exivo Changelog
 
-## [Initial Version] - {PR_MERGE_DATE}
+## [Added Exivo] - {PR_MERGE_DATE}
+
+Initial version code
