@@ -40,7 +40,7 @@ export default function Command() {
                 <ActionPanel>
                   <Action.Push
                     title="Show Details"
-                    target={<AccessLogDetails logItems={componentGroups[component]} />}
+                    target={<AccessLogDetails component={component} logItems={componentGroups[component]} />}
                   />
                 </ActionPanel>
               }

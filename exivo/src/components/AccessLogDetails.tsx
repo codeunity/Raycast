@@ -4,14 +4,15 @@ import { useState } from "react";
 import { AccessLogListItem } from "../utils/accesslogData";
 
 type AccessLogItemProps = {
+  component: string;
   logItems: AccessLogListItem[];
 };
 
-export const AccessLogDetails: React.FC<AccessLogItemProps> = ({ logItems }) => {
+export const AccessLogDetails: React.FC<AccessLogItemProps> = ({ component, logItems }) => {
   const [searchText, setSearchText] = useState("");
 
   return (
-    <List onSearchTextChange={setSearchText}>
+    <List navigationTitle={`Door: ${component}`} onSearchTextChange={setSearchText}>
       <List.Section title="Today">
         {logItems
           .filter((x) => x.date >= DateTime.now().startOf("day"))

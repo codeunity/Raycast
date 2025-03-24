@@ -40,7 +40,7 @@ export default function Command() {
                           revalidateComponents();
                         });
                       }}
-                      title="Always Open Mode"
+                      title="Permanent Open Mode"
                     />
                   ) : (
                     <Action
