@@ -1,6 +1,8 @@
-import { Icon, List } from "@raycast/api";
+import { Action, ActionPanel, Icon, List } from "@raycast/api";
 import { Project } from "../types/Project";
+import { CreateTimeRecord } from "./CreateTimeRecord";
 import { ProjectDetails } from "./ProjectDetails";
+import { ProjectTimeRecords } from "./ProjectTimeRecords";
 
 type ProjectListItemProps = {
   project: Project;
@@ -21,5 +23,18 @@ export const ProjectListItem: React.FC<ProjectListItemProps> = ({ project }) => 
     icon = Icon.CircleProgress25;
   }
 
-  return <List.Item icon={icon} title={project.name} detail={<ProjectDetails project={project} />} />;
+  return (
+    <List.Item
+      key={project.id}
+      icon={icon}
+      title={project.name}
+      actions={
+        <ActionPanel>
+          <Action.Push title="Time records" icon={Icon.Stopwatch} target={<ProjectTimeRecords project={project} />} />
+          <Action.Push title="Create time record" icon={Icon.Plus} target={<CreateTimeRecord project={project} />} />
+        </ActionPanel>
+      }
+      detail={<ProjectDetails project={project} />}
+    />
+  );
 };

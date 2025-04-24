@@ -7,13 +7,21 @@ import { useTimeClient } from "./hooks/useTimeClient";
 function Command() {
   const { data, isLoading } = useTimeClient().getProjects;
 
-  const nonCompletedProjects = data?.projects?.filter((project) => !project.isCompleted) ?? [];
-  const ordererProjects = orderBy(nonCompletedProjects, ["id"], ["desc"]);
+  const activeProjects = data?.projects?.filter((project) => !project.isCompleted) ?? [];
+  const completedProjects = data?.projects?.filter((project) => project.isCompleted) ?? [];
+
+  const ordererActiveProjects = orderBy(activeProjects, ["id"], ["desc"]);
+  const ordererCompletedProjects = orderBy(completedProjects, ["id"], ["desc"]);
 
   return (
     <List isLoading={isLoading} isShowingDetail={true}>
-      <List.Section title="Projects">
-        {ordererProjects.map((project) => (
+      <List.Section title="Active projects">
+        {ordererActiveProjects.map((project) => (
+          <ProjectListItem key={project.id} project={project} />
+        ))}
+      </List.Section>
+      <List.Section title="Completed projects">
+        {ordererCompletedProjects.map((project) => (
           <ProjectListItem key={project.id} project={project} />
         ))}
       </List.Section>
