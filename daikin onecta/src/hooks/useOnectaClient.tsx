@@ -1,6 +1,5 @@
 import { showToast, Toast } from "@raycast/api";
-import { showFailureToast, useFetch } from "@raycast/utils";
-import { GatewayDevice } from "../types/GatewayDevice";
+import { showFailureToast } from "@raycast/utils";
 import { GetAcessToken } from "./onectaAuth";
 
 const OnectaConfig = {
@@ -9,21 +8,6 @@ const OnectaConfig = {
 
 export const useOnectaClient = () => {
   const { accessToken } = GetAcessToken();
-
-  const getGatewayDevices = useFetch<GatewayDevice[]>(`${OnectaConfig.baseUrl}/gateway-devices`, {
-    onError: (error: { message: string }) => {
-      showToast({
-        style: Toast.Style.Failure,
-        title: "Failed to load info.",
-        message: error.message,
-      });
-    },
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-    },
-  });
 
   const enablePowerfulMode = (deviceId: string) => {
     showToast({ style: Toast.Style.Animated, title: "Enabling power mode..." });
@@ -199,7 +183,6 @@ export const useOnectaClient = () => {
   };
 
   return {
-    getGatewayDevices,
     setOperationMode,
     enablePowerfulMode,
     disablePowerfulMode,

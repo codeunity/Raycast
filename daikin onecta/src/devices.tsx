@@ -12,18 +12,18 @@ import {
   targetTemperatureWithoutUnit,
 } from "./gatewayDeviceUtils";
 import { withDaikinAccessToken } from "./hooks/onectaAuth";
+import { useGatewayDevices } from "./hooks/useGatewayDevices";
 import { useOnectaClient } from "./hooks/useOnectaClient";
 
 function Command() {
-  const { getGatewayDevices, enableCooling, disableCooling, enablePowerfulMode, disablePowerfulMode } =
-    useOnectaClient();
-  const { data, isLoading } = getGatewayDevices;
+  const { enableCooling, disableCooling, enablePowerfulMode, disablePowerfulMode } = useOnectaClient();
+  const { data, isLoading, revalidate: revalidateGatewayDevices } = useGatewayDevices();
   const [waitingForReload, setWaitingForReload] = useState(false);
 
   const revalidate = (waitUntilRefetchTime: number = 8000) => {
     setWaitingForReload(true);
     setTimeout(() => {
-      getGatewayDevices.revalidate();
+      revalidateGatewayDevices();
       setWaitingForReload(false);
     }, waitUntilRefetchTime);
   };
