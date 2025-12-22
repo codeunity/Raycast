@@ -40,12 +40,12 @@ export const ProjectTimeRecords: React.FC<ProjectTimeRecordsProps> = ({ project 
             actions={
               <ActionPanel>
                 <Action.Push
-                  title="Create time record"
+                  title="Create Time Record"
                   icon={Icon.Plus}
                   target={<CreateTimeRecord project={project} onTimeRecordCreated={revalidate} />}
                 />
                 <Action
-                  title="Delete time record"
+                  title="Delete Time Record"
                   icon={Icon.Trash}
                   onAction={() => onDeleteTimeRecord(timeRecord.id)}
                 />

@@ -30,8 +30,8 @@ export const ProjectListItem: React.FC<ProjectListItemProps> = ({ project }) => 
       title={project.name}
       actions={
         <ActionPanel>
-          <Action.Push title="Time records" icon={Icon.Stopwatch} target={<ProjectTimeRecords project={project} />} />
-          <Action.Push title="Create time record" icon={Icon.Plus} target={<CreateTimeRecord project={project} />} />
+          <Action.Push title="Time Records" icon={Icon.Stopwatch} target={<ProjectTimeRecords project={project} />} />
+          <Action.Push title="Create Time Record" icon={Icon.Plus} target={<CreateTimeRecord project={project} />} />
         </ActionPanel>
       }
       detail={<ProjectDetails project={project} />}
