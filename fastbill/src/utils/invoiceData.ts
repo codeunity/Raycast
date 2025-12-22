@@ -28,7 +28,11 @@ const getPaidState = (invoice: Invoice): InvoicePaidState => {
 export const toInvoiceListItems = (apiInvoices?: InvoiceApiResponse): InvoiceListItem[] => {
   if (!apiInvoices) return [];
 
-  const invoiceListItems = apiInvoices.RESPONSE.INVOICES.map(
+  const invoicesOnly = apiInvoices.RESPONSE.INVOICES.filter(
+    (invoice) => invoice.TOTAL >= 0 && invoice.IS_CANCELED !== "1",
+  );
+
+  const invoiceListItems = invoicesOnly.map(
     (invoice) =>
       ({
         id: invoice.INVOICE_ID,
