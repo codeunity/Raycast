@@ -26,7 +26,7 @@ export const MarkInvoiceAsPaid: React.FC<MarkInvoiceAsPaidProps> = ({ invoice, o
       navigationTitle={`Mark invoice ${invoice.data.INVOICE_NUMBER} as paid`}
       actions={
         <ActionPanel>
-          <Action.SubmitForm title="Mark as paid" onSubmit={handleSubmit} />
+          <Action.SubmitForm title="Mark as Paid" onSubmit={handleSubmit} />
         </ActionPanel>
       }
     >

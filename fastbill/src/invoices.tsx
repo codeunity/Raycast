@@ -51,7 +51,7 @@ export default function Command() {
                     <ActionPanel>
                       {invoice.paidState.title !== "PAID" && (
                         <Action
-                          title={`Mark as paid`}
+                          title={`Mark as Paid`}
                           onAction={() => push(<MarkInvoiceAsPaid invoice={invoice} onMarkedAsPaid={revalidate} />)}
                         />
                       )}
