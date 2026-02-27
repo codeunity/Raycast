@@ -76,6 +76,31 @@ export const useTimeClient = () => {
       });
   };
 
+  const updateTimeRecord = (timeRecordId: number, updateTimeRecord: CreateTimeRecord) => {
+    showToast({ style: Toast.Style.Animated, title: "Updating time record..." });
+
+    return fetch(`${TimeConfig.baseUrl}/timerecords.update-multiple`, {
+      method: "POST",
+      body: JSON.stringify([{ id: timeRecordId, ...updateTimeRecord }]),
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then(() => {
+        showToast({
+          style: Toast.Style.Success,
+          title: "Updated time record successfully!",
+        });
+      })
+      .catch((error: { message: string }) => {
+        showFailureToast(error, {
+          title: "Failed to update time record.",
+          message: error.message,
+        });
+      });
+  };
+
   const deleteTimeRecord = (timeRecordId: number) => {
     showToast({ style: Toast.Style.Animated, title: "Deleting time record..." });
 
@@ -105,6 +130,7 @@ export const useTimeClient = () => {
     getProjects,
     getTimeRecords,
     createTimeRecord,
+    updateTimeRecord,
     deleteTimeRecord,
   };
 };

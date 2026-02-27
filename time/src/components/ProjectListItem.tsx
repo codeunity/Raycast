@@ -1,6 +1,6 @@
 import { Action, ActionPanel, Icon, List } from "@raycast/api";
 import { Project } from "../types/Project";
-import { CreateTimeRecord } from "./CreateTimeRecord";
+import { CreateUpdateTimeRecord } from "./CreateUpdateTimeRecord";
 import { ProjectDetails } from "./ProjectDetails";
 import { ProjectTimeRecords } from "./ProjectTimeRecords";
 
@@ -31,7 +31,11 @@ export const ProjectListItem: React.FC<ProjectListItemProps> = ({ project }) => 
       actions={
         <ActionPanel>
           <Action.Push title="Time Records" icon={Icon.Stopwatch} target={<ProjectTimeRecords project={project} />} />
-          <Action.Push title="Create Time Record" icon={Icon.Plus} target={<CreateTimeRecord project={project} />} />
+          <Action.Push
+            title="Create Time Record"
+            icon={Icon.Plus}
+            target={<CreateUpdateTimeRecord project={project} />}
+          />
         </ActionPanel>
       }
       detail={<ProjectDetails project={project} />}
