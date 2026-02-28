@@ -39,7 +39,7 @@ export const ProjectTimeRecords: React.FC<ProjectTimeRecordsProps> = ({ project 
               <Action.Push
                 title="Create Time Record"
                 icon={Icon.Plus}
-                target={<CreateUpdateTimeRecord project={project} />}
+                target={<CreateUpdateTimeRecord revalidate={revalidate} project={project} />}
               />
             </ActionPanel>
           }
@@ -82,7 +82,7 @@ export const ProjectTimeRecords: React.FC<ProjectTimeRecordsProps> = ({ project 
                 <Action.Push
                   title="Create Time Record"
                   icon={Icon.Plus}
-                  target={<CreateUpdateTimeRecord project={project} />}
+                  target={<CreateUpdateTimeRecord revalidate={revalidate} project={project} />}
                 />
               </ActionPanel>
             }
