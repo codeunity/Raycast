@@ -16,12 +16,14 @@ type CreateTimeRecordProps = {
   project: Project;
   timeRecord?: TimeRecord;
   onTimeRecordCreated?: () => void;
+  revalidate?: () => void;
 };
 
 export const CreateUpdateTimeRecord: React.FC<CreateTimeRecordProps> = ({
   project,
   timeRecord,
   onTimeRecordCreated,
+  revalidate,
 }) => {
   const { pop } = useNavigation();
   const { createTimeRecord, updateTimeRecord } = useTimeClient();
@@ -47,6 +49,8 @@ export const CreateUpdateTimeRecord: React.FC<CreateTimeRecordProps> = ({
         });
         onTimeRecordCreated?.();
       }
+
+      if (revalidate) revalidate();
 
       pop();
     },
