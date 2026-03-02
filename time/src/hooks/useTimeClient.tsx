@@ -29,8 +29,8 @@ export const useTimeClient = () => {
   });
 
   const getTimeRecords = (projectId: number, fromDate?: string, toDate?: string) => {
-    const from = fromDate ?? DateTime.now().startOf("month").toFormat("yyyy-MM-dd");
-    const to = toDate ?? DateTime.now().endOf("month").toFormat("yyyy-MM-dd");
+    const from = fromDate ?? DateTime.now().minus({ months: 1 }).toFormat("yyyy-MM-dd");
+    const to = toDate ?? DateTime.now().toFormat("yyyy-MM-dd");
 
     return useFetch<TimeRecordsResponse>(
       `${TimeConfig.baseUrl}/timerecords.get?projectId=${projectId}&fromDate=${from}&toDate=${to}`,

@@ -36,6 +36,11 @@ export const ProjectListItem: React.FC<ProjectListItemProps> = ({ project }) => 
             icon={Icon.Plus}
             target={<CreateUpdateTimeRecord project={project} />}
           />
+          <Action.OpenInBrowser
+            title="Open in Time"
+            url={`https://www.timeunity.de/timetracker?projectId=${project.id}`}
+            icon={Icon.Globe}
+          />
         </ActionPanel>
       }
       detail={<ProjectDetails project={project} />}
