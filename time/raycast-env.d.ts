@@ -14,7 +14,10 @@ declare type Preferences = ExtensionPreferences
 
 declare namespace Preferences {
   /** Preferences accessible in the `projects` command */
-  export type Projects = ExtensionPreferences & {}
+  export type Projects = ExtensionPreferences & {
+  /** Time URL - Base URL of your time instance. */
+  "timeUrl": string
+}
 }
 
 declare namespace Arguments {
