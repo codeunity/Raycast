@@ -15,7 +15,17 @@
       "name": "projects",
       "title": "Projects",
       "description": "Show all projects.",
-      "mode": "view"
+      "mode": "view",
+      "preferences": [
+        {
+          "name": "timeUrl",
+          "title": "Time URL",
+          "description": "Base URL of your time instance.",
+          "type": "textfield",
+          "default": "https://www.timeunity.de",
+          "required": false
+        }
+      ]
     }
   ],
   "dependencies": {
