@@ -72,7 +72,8 @@ export const withAccount2Token = withAccessToken(provider2);
 
 export async function getActiveAccountId(): Promise<AccountId> {
   const stored = await LocalStorage.getItem<string>(ACTIVE_ACCOUNT_KEY);
-  return (stored as AccountId) ?? "account-1";
+  if (stored === "account-1" || stored === "account-2") return stored;
+  return "account-1";
 }
 
 export async function setActiveAccountId(id: AccountId): Promise<void> {
@@ -83,7 +84,7 @@ export function getProviderForAccount(id: AccountId) {
   return id === "account-2" ? provider2 : provider1;
 }
 
-export const GetAcessToken = () => {
+export const GetAccessToken = () => {
   if (!accessToken) {
     throw new Error("Access token must be used when authenticated.");
   }

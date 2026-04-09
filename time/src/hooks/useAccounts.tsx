@@ -21,7 +21,9 @@ export function decodeJwtPayload(token: string): { email?: string; name?: string
   try {
     const payload = token.split(".")[1];
     if (!payload) return {};
-    const decoded = atob(payload.replace(/-/g, "+").replace(/_/g, "/"));
+    const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const paddedBase64 = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
+    const decoded = atob(paddedBase64);
     return JSON.parse(decoded);
   } catch {
     return {};
