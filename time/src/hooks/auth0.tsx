@@ -48,6 +48,9 @@ export const provider1 = new OAuthService({
 
 export const provider2 = new OAuthService({
   ...sharedOAuthConfig,
+  // Force Auth0 to show the login screen so the user can enter different credentials,
+  // rather than silently reusing the existing browser session from account 1.
+  extraParameters: { ...sharedOAuthConfig.extraParameters, prompt: "login" },
   client: oauthClient2,
   onAuthorize: ({ token }) => {
     accessToken = token;
