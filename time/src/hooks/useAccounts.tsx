@@ -100,13 +100,10 @@ export function useAccounts() {
 
   const removeAccount = useCallback(
     async (id: AccountId) => {
-      if (id === "account-1") return;
-      await oauthClient2.removeTokens();
+      if (id === activeId) return; // never remove the active account
+      const client = id === "account-1" ? oauthClient1 : oauthClient2;
+      await client.removeTokens();
       setAccounts((prev) => prev.filter((a) => a.id !== id));
-      if (activeId === id) {
-        await setActiveAccountId("account-1");
-        setActiveIdState("account-1");
-      }
       await showToast({ style: Toast.Style.Success, title: "Account removed" });
     },
     [activeId],

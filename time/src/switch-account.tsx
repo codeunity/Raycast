@@ -31,7 +31,7 @@ export default function SwitchAccount() {
                   onAction={() => switchTo(account.id as AccountId)}
                 />
               )}
-              {account.id !== "account-1" && (
+              {!account.isActive && (
                 <Action
                   title="Remove Account"
                   icon={Icon.Trash}
