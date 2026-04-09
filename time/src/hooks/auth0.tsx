@@ -27,7 +27,7 @@ export const oauthClient1 = new OAuth.PKCEClient({
   providerName: "codeunity time",
   providerIcon: "auth0-logo.svg",
   description: "Connect your account",
-  providerId: "auth0-account-1",
+  providerId: "auth0", // Keep original ID so existing stored tokens are not invalidated
 });
 
 export const oauthClient2 = new OAuth.PKCEClient({
