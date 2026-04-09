@@ -1,6 +1,5 @@
-import { Detail, LocalStorage, OAuth } from "@raycast/api";
-import { OAuthService } from "@raycast/utils";
-import { useEffect, useState } from "react";
+import { LocalStorage, OAuth } from "@raycast/api";
+import { OAuthService, withAccessToken } from "@raycast/utils";
 
 const clientId = "7stgDJlS9Gm1NzYGZVAQSgtVHmXHtpZ0";
 const baseUrl = "https://codeunity.eu.auth0.com";
@@ -57,6 +56,9 @@ export const provider2 = new OAuthService({
   },
 });
 
+export const withAccount1Token = withAccessToken(provider1);
+export const withAccount2Token = withAccessToken(provider2);
+
 export async function getActiveAccountId(): Promise<AccountId> {
   const stored = await LocalStorage.getItem<string>(ACTIVE_ACCOUNT_KEY);
   return (stored as AccountId) ?? "account-1";
@@ -68,34 +70,6 @@ export async function setActiveAccountId(id: AccountId): Promise<void> {
 
 export function getProviderForAccount(id: AccountId) {
   return id === "account-2" ? provider2 : provider1;
-}
-
-function AuthWrapper({ children }: { children: React.ReactNode }) {
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    async function authorize() {
-      const id = await getActiveAccountId();
-      const provider = getProviderForAccount(id);
-      const token = await provider.authorize();
-      accessToken = token;
-      setReady(true);
-    }
-    authorize();
-  }, []);
-
-  if (!ready) return <Detail isLoading />;
-  return <>{children}</>;
-}
-
-export function withMultiAccountToken<T extends object>(Component: React.ComponentType<T>) {
-  return function MultiAccountWrapper(props: T) {
-    return (
-      <AuthWrapper>
-        <Component {...props} />
-      </AuthWrapper>
-    );
-  };
 }
 
 export const GetAcessToken = () => {
