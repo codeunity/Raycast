@@ -28,9 +28,16 @@ export function decodeJwtPayload(token: string): { email?: string; name?: string
   }
 }
 
-async function getTokenForClient(client: typeof oauthClient1): Promise<string | null> {
+// Prefer the id_token for display — it always carries profile claims (email, name).
+// Fall back to the access token in case the id_token is absent.
+async function getDisplayTokenForClient(client: typeof oauthClient1): Promise<string | null> {
   const tokenSet = await client.getTokens();
-  return tokenSet?.accessToken ?? null;
+  return tokenSet?.idToken ?? tokenSet?.accessToken ?? null;
+}
+
+async function hasTokenForClient(client: typeof oauthClient1): Promise<boolean> {
+  const tokenSet = await client.getTokens();
+  return !!tokenSet?.accessToken;
 }
 
 export function useAccounts() {
@@ -42,8 +49,8 @@ export function useAccounts() {
     setIsLoading(true);
     const [id, token1, token2] = await Promise.all([
       getActiveAccountId(),
-      getTokenForClient(oauthClient1),
-      getTokenForClient(oauthClient2),
+      getDisplayTokenForClient(oauthClient1),
+      getDisplayTokenForClient(oauthClient2),
     ]);
 
     setActiveIdState(id);
@@ -76,7 +83,7 @@ export function useAccounts() {
   const addAccount = useCallback(async () => {
     try {
       await provider2.authorize();
-      const token2 = await getTokenForClient(oauthClient2);
+      const token2 = await getDisplayTokenForClient(oauthClient2);
       if (token2) {
         const claims = decodeJwtPayload(token2);
         setAccounts((prev) => {
@@ -114,16 +121,19 @@ export function useActiveAccountDisplay() {
 
   useEffect(() => {
     async function load() {
-      const [id, token1, token2] = await Promise.all([
+      const [id, hasAcc1, hasAcc2, displayToken1, displayToken2] = await Promise.all([
         getActiveAccountId(),
-        getTokenForClient(oauthClient1),
-        getTokenForClient(oauthClient2),
+        hasTokenForClient(oauthClient1),
+        hasTokenForClient(oauthClient2),
+        getDisplayTokenForClient(oauthClient1),
+        getDisplayTokenForClient(oauthClient2),
       ]);
 
       // Only show the label when both accounts are registered
-      if (!token1 || !token2) return;
+      if (!hasAcc1 || !hasAcc2) return;
 
-      const activeToken = id === "account-2" ? token2 : token1;
+      const activeToken = id === "account-2" ? displayToken2 : displayToken1;
+      if (!activeToken) return;
       const claims = decodeJwtPayload(activeToken);
       setLabel(claims.email ?? claims.name ?? "");
       setShowLabel(true);
