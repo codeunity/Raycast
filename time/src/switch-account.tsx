@@ -16,7 +16,15 @@ export default function SwitchAccount() {
           subtitle={account.isActive ? "Active" : undefined}
           actions={
             <ActionPanel>
-              {!account.isActive && (
+              {account.isActive ? (
+                <Action
+                  title="Active Account"
+                  icon={Icon.CheckCircle}
+                  onAction={() => {
+                    // no-op — prevents Remove from becoming the primary Enter action
+                  }}
+                />
+              ) : (
                 <Action
                   title="Switch to This Account"
                   icon={Icon.ArrowRight}
