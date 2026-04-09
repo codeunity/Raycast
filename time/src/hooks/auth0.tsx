@@ -45,6 +45,17 @@ export const provider1 = new OAuthService({
   },
 });
 
+// Used only when adding a new account into slot 1 — forces the login screen
+// so the user isn't silently signed in as their existing account.
+export const addProvider1 = new OAuthService({
+  ...sharedOAuthConfig,
+  extraParameters: { ...sharedOAuthConfig.extraParameters, prompt: "login" },
+  client: oauthClient1,
+  onAuthorize: ({ token }) => {
+    accessToken = token;
+  },
+});
+
 export const provider2 = new OAuthService({
   ...sharedOAuthConfig,
   // Force Auth0 to show the login screen so the user can enter different credentials,

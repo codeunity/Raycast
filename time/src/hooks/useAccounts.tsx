@@ -2,7 +2,7 @@ import { showToast, Toast } from "@raycast/api";
 import { useCallback, useEffect, useState } from "react";
 import {
   AccountId,
-  ACTIVE_ACCOUNT_KEY,
+  addProvider1,
   getActiveAccountId,
   oauthClient1,
   oauthClient2,
@@ -82,21 +82,26 @@ export function useAccounts() {
 
   const addAccount = useCallback(async () => {
     try {
-      await provider2.authorize();
-      const token2 = await getDisplayTokenForClient(oauthClient2);
-      if (token2) {
-        const claims = decodeJwtPayload(token2);
+      // Pick whichever slot is currently empty
+      const freeSlot: AccountId = accounts.some((a) => a.id === "account-1") ? "account-2" : "account-1";
+      const addProvider = freeSlot === "account-1" ? addProvider1 : provider2;
+      const freeClient = freeSlot === "account-1" ? oauthClient1 : oauthClient2;
+
+      await addProvider.authorize();
+      const token = await getDisplayTokenForClient(freeClient);
+      if (token) {
+        const claims = decodeJwtPayload(token);
         setAccounts((prev) => {
-          const exists = prev.some((a) => a.id === "account-2");
-          if (exists) return prev.map((a) => (a.id === "account-2" ? { ...a, ...claims } : a));
-          return [...prev, { id: "account-2", email: claims.email, name: claims.name, isActive: false }];
+          const exists = prev.some((a) => a.id === freeSlot);
+          if (exists) return prev.map((a) => (a.id === freeSlot ? { ...a, ...claims } : a));
+          return [...prev, { id: freeSlot, email: claims.email, name: claims.name, isActive: false }];
         });
       }
       await showToast({ style: Toast.Style.Success, title: "Account added" });
     } catch {
       await showToast({ style: Toast.Style.Failure, title: "Failed to add account" });
     }
-  }, []);
+  }, [accounts]);
 
   const removeAccount = useCallback(
     async (id: AccountId) => {
