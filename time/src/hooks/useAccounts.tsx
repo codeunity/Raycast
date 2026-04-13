@@ -10,14 +10,14 @@ import {
   setActiveAccountId,
 } from "./auth0";
 
-export interface AccountInfo {
+export type AccountInfo = {
   id: AccountId;
   email: string | undefined;
   name: string | undefined;
   isActive: boolean;
 }
 
-export function decodeJwtPayload(token: string): { email?: string; name?: string } {
+export const decodeJwtPayload = (token: string): { email?: string; name?: string } => {
   try {
     const payload = token.split(".")[1];
     if (!payload) return {};
