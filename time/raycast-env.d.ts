@@ -18,10 +18,14 @@ declare namespace Preferences {
   /** Time URL - Base URL of your time instance. */
   "timeUrl": string
 }
+  /** Preferences accessible in the `switch-account` command */
+  export type SwitchAccount = ExtensionPreferences & {}
 }
 
 declare namespace Arguments {
   /** Arguments passed to the `projects` command */
   export type Projects = {}
+  /** Arguments passed to the `switch-account` command */
+  export type SwitchAccount = {}
 }
 

@@ -1,0 +1,149 @@
+import { showToast, Toast } from "@raycast/api";
+import { useCallback, useEffect, useState } from "react";
+import {
+  AccountId,
+  addProvider1,
+  getActiveAccountId,
+  oauthClient1,
+  oauthClient2,
+  provider2,
+  setActiveAccountId,
+} from "./auth0";
+
+export type AccountInfo = {
+  id: AccountId;
+  email: string | undefined;
+  name: string | undefined;
+  isActive: boolean;
+}
+
+export const decodeJwtPayload = (token: string): { email?: string; name?: string } => {
+  try {
+    const payload = token.split(".")[1];
+    if (!payload) return {};
+    const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const paddedBase64 = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
+    const decoded = atob(paddedBase64);
+    return JSON.parse(decoded);
+  } catch {
+    return {};
+  }
+}
+
+// Prefer the id_token for display — it always carries profile claims (email, name).
+// Fall back to the access token in case the id_token is absent.
+async function getDisplayTokenForClient(client: typeof oauthClient1): Promise<string | null> {
+  const tokenSet = await client.getTokens();
+  return tokenSet?.idToken ?? tokenSet?.accessToken ?? null;
+}
+
+async function hasTokenForClient(client: typeof oauthClient1): Promise<boolean> {
+  const tokenSet = await client.getTokens();
+  return !!tokenSet?.accessToken;
+}
+
+export function useAccounts() {
+  const [accounts, setAccounts] = useState<AccountInfo[]>([]);
+  const [activeId, setActiveIdState] = useState<AccountId>("account-1");
+  const [isLoading, setIsLoading] = useState(true);
+
+  const refresh = useCallback(async () => {
+    setIsLoading(true);
+    const [id, token1, token2] = await Promise.all([
+      getActiveAccountId(),
+      getDisplayTokenForClient(oauthClient1),
+      getDisplayTokenForClient(oauthClient2),
+    ]);
+
+    setActiveIdState(id);
+
+    const result: AccountInfo[] = [];
+    if (token1) {
+      const claims = decodeJwtPayload(token1);
+      result.push({ id: "account-1", email: claims.email, name: claims.name, isActive: id === "account-1" });
+    }
+    if (token2) {
+      const claims = decodeJwtPayload(token2);
+      result.push({ id: "account-2", email: claims.email, name: claims.name, isActive: id === "account-2" });
+    }
+
+    setAccounts(result);
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  const switchTo = useCallback(async (id: AccountId) => {
+    await setActiveAccountId(id);
+    setActiveIdState(id);
+    setAccounts((prev) => prev.map((a) => ({ ...a, isActive: a.id === id })));
+    await showToast({ style: Toast.Style.Success, title: "Account switched" });
+  }, []);
+
+  const addAccount = useCallback(async () => {
+    try {
+      // Pick whichever slot is currently empty
+      const freeSlot: AccountId = accounts.some((a) => a.id === "account-1") ? "account-2" : "account-1";
+      const addProvider = freeSlot === "account-1" ? addProvider1 : provider2;
+      const freeClient = freeSlot === "account-1" ? oauthClient1 : oauthClient2;
+
+      await addProvider.authorize();
+      const token = await getDisplayTokenForClient(freeClient);
+      if (token) {
+        const claims = decodeJwtPayload(token);
+        setAccounts((prev) => {
+          const exists = prev.some((a) => a.id === freeSlot);
+          if (exists) return prev.map((a) => (a.id === freeSlot ? { ...a, ...claims } : a));
+          return [...prev, { id: freeSlot, email: claims.email, name: claims.name, isActive: false }];
+        });
+      }
+      await showToast({ style: Toast.Style.Success, title: "Account added" });
+    } catch {
+      await showToast({ style: Toast.Style.Failure, title: "Failed to add account" });
+    }
+  }, [accounts]);
+
+  const removeAccount = useCallback(
+    async (id: AccountId) => {
+      if (id === activeId) return; // never remove the active account
+      const client = id === "account-1" ? oauthClient1 : oauthClient2;
+      await client.removeTokens();
+      setAccounts((prev) => prev.filter((a) => a.id !== id));
+      await showToast({ style: Toast.Style.Success, title: "Account removed" });
+    },
+    [activeId],
+  );
+
+  return { accounts, activeId, isLoading, switchTo, addAccount, removeAccount, refresh };
+}
+
+export function useActiveAccountDisplay() {
+  const [label, setLabel] = useState<string>("");
+  const [showLabel, setShowLabel] = useState(false);
+
+  useEffect(() => {
+    async function load() {
+      const [id, hasAcc1, hasAcc2, displayToken1, displayToken2] = await Promise.all([
+        getActiveAccountId(),
+        hasTokenForClient(oauthClient1),
+        hasTokenForClient(oauthClient2),
+        getDisplayTokenForClient(oauthClient1),
+        getDisplayTokenForClient(oauthClient2),
+      ]);
+
+      // Only show the label when both accounts are registered
+      if (!hasAcc1 || !hasAcc2) return;
+
+      const activeToken = id === "account-2" ? displayToken2 : displayToken1;
+      if (!activeToken) return;
+      const claims = decodeJwtPayload(activeToken);
+      setLabel(claims.email ?? claims.name ?? "");
+      setShowLabel(true);
+    }
+    load();
+  }, []);
+
+  return { label, showLabel };
+}

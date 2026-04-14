@@ -26,6 +26,12 @@
           "required": false
         }
       ]
+    },
+    {
+      "name": "switch-account",
+      "title": "Switch Account",
+      "description": "Switch between your Time accounts.",
+      "mode": "view"
     }
   ],
   "dependencies": {

@@ -4,14 +4,14 @@ import { DateTime } from "luxon";
 import { CreateTimeRecord } from "../types/CreateTimeRecord";
 import { ProjetsResponse } from "../types/Project";
 import { TimeRecordsResponse } from "../types/TimeRecord";
-import { GetAcessToken } from "./auth0";
+import { GetAccessToken } from "./auth0";
 
 const TimeConfig = {
   baseUrl: "https://api-timetracker-prod.azurewebsites.net/api",
 };
 
 export const useTimeClient = () => {
-  const { accessToken } = GetAcessToken();
+  const { accessToken } = GetAccessToken();
 
   const getProjects = useFetch<ProjetsResponse>(`${TimeConfig.baseUrl}/projects.get`, {
     onError: (error: { message: string }) => {
