@@ -2,8 +2,8 @@ import { LocalStorage, OAuth } from "@raycast/api";
 import { OAuthService, withAccessToken } from "@raycast/utils";
 
 const clientId = "7stgDJlS9Gm1NzYGZVAQSgtVHmXHtpZ0";
-const baseUrl = "https://codeunity.eu.auth0.com";
-const audience = "https://api-timetracker-prod.azurewebsites.net/api/";
+const baseUrl = "https://login.timeunity.de";
+const audience = "https://backend.timeunity.de/api";
 const scope = ["openid", "profile", "email", "offline_access"].join(" ");
 
 const sharedOAuthConfig = {
