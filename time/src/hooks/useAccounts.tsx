@@ -15,7 +15,7 @@ export type AccountInfo = {
   email: string | undefined;
   name: string | undefined;
   isActive: boolean;
-}
+};
 
 export const decodeJwtPayload = (token: string): { email?: string; name?: string } => {
   try {
@@ -28,7 +28,7 @@ export const decodeJwtPayload = (token: string): { email?: string; name?: string
   } catch {
     return {};
   }
-}
+};
 
 // Prefer the id_token for display — it always carries profile claims (email, name).
 // Fall back to the access token in case the id_token is absent.

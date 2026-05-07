@@ -7,7 +7,7 @@ import { TimeRecordsResponse } from "../types/TimeRecord";
 import { GetAccessToken } from "./auth0";
 
 const TimeConfig = {
-  baseUrl: "https://api-timetracker-prod.azurewebsites.net/api",
+  baseUrl: "https://backend.timeunity.de/api",
 };
 
 export const useTimeClient = () => {
