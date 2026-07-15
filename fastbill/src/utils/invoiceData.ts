@@ -37,7 +37,7 @@ export const toInvoiceListItems = (apiInvoices?: InvoiceApiResponse): InvoiceLis
       ({
         id: invoice.INVOICE_ID,
         title: `${invoice.INVOICE_NUMBER} - ${invoice.ORGANIZATION}`,
-        subtitle: `${Number(invoice.TOTAL).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€`,
+        subtitle: `${Number(invoice.SUB_TOTAL).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€`,
         paidState: getPaidState(invoice),
         data: invoice,
       }) satisfies InvoiceListItem,
@@ -63,6 +63,6 @@ export const getInvoicesGroupedByMonth = (invoices: InvoiceListItem[]) => {
 };
 
 export const getTotal = (invoices: InvoiceListItem[]) => {
-  const total = sum(invoices.map((x) => x.data.TOTAL)) - sum(invoices.map((x) => x.data.VAT_TOTAL));
+  const total = sum(invoices.map((x) => Number(x.data.SUB_TOTAL)));
   return `${total.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€`;
 };
