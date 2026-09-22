@@ -17,6 +17,16 @@ const isOverDueDate = (dueDate: string) => {
   return DateTime.now() > DateTime.fromFormat(dueDate, "yyyy-MM-dd HH:mm:ss");
 };
 
+const getCustomerName = (invoice: Invoice) => {
+  const organization = invoice.ORGANIZATION?.trim();
+  if (organization) return organization;
+
+  return [invoice.FIRST_NAME, invoice.LAST_NAME]
+    .map((namePart) => namePart?.trim())
+    .filter(Boolean)
+    .join(" ");
+};
+
 const getPaidState = (invoice: Invoice): InvoicePaidState => {
   return invoice.PAID_DATE.includes("0000-00-00")
     ? isOverDueDate(invoice.DUE_DATE)
@@ -29,14 +39,14 @@ export const toInvoiceListItems = (apiInvoices?: InvoiceApiResponse): InvoiceLis
   if (!apiInvoices) return [];
 
   const invoicesOnly = apiInvoices.RESPONSE.INVOICES.filter(
-    (invoice) => invoice.TOTAL >= 0 && invoice.IS_CANCELED !== "1",
+    (invoice) => invoice.TYPE !== "draft" && invoice.TOTAL >= 0 && invoice.IS_CANCELED !== "1",
   );
 
   const invoiceListItems = invoicesOnly.map(
     (invoice) =>
       ({
         id: invoice.INVOICE_ID,
-        title: `${invoice.INVOICE_NUMBER} - ${invoice.ORGANIZATION}`,
+        title: [invoice.INVOICE_NUMBER, getCustomerName(invoice)].filter(Boolean).join(" - "),
         subtitle: `${Number(invoice.TOTAL).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€`,
         paidState: getPaidState(invoice),
         data: invoice,

@@ -7,9 +7,11 @@ export type InvoiceApiResponse = {
   };
 };
 
+export type InvoiceType = "outgoing" | "draft" | "credit";
+
 export type Invoice = {
   INVOICE_ID: string;
-  TYPE: string;
+  TYPE: InvoiceType;
   CUSTOMER_ID: string;
   CUSTOMER_NUMBER: string;
   CUSTOMER_COSTCENTER_ID: string;

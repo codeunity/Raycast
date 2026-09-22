@@ -1,6 +1,6 @@
 import { Action, ActionPanel, Form, useNavigation } from "@raycast/api";
 import { useState } from "react";
-import { useFastbillClient } from "../hooks/useFastbillClient";
+import { markInvoiceAsPaid } from "../hooks/useFastbillClient";
 import { InvoiceListItem } from "../utils/invoiceData";
 
 type MarkInvoiceAsPaidProps = {
@@ -10,7 +10,6 @@ type MarkInvoiceAsPaidProps = {
 
 export const MarkInvoiceAsPaid: React.FC<MarkInvoiceAsPaidProps> = ({ invoice, onMarkedAsPaid }) => {
   const [date, setDate] = useState<Date | null>(null);
-  const { markInvoiceAsPaid } = useFastbillClient();
   const { pop } = useNavigation();
 
   async function handleSubmit() {
