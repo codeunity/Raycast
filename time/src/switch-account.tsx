@@ -36,7 +36,10 @@ export default function SwitchAccount() {
                   title="Remove Account"
                   icon={Icon.Trash}
                   style={Action.Style.Destructive}
-                  shortcut={{ modifiers: ["cmd"], key: "backspace" }}
+                  shortcut={{
+                    macOS: { modifiers: ["cmd"], key: "backspace" },
+                    Windows: { modifiers: ["ctrl"], key: "backspace" },
+                  }}
                   onAction={() => removeAccount(account.id as AccountId)}
                 />
               )}

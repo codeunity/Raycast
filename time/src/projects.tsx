@@ -4,10 +4,10 @@ import { orderBy } from "es-toolkit";
 import { ProjectListItem } from "./components/ProjectListItem";
 import { getActiveAccountId, withAccount1Token, withAccount2Token } from "./hooks/auth0";
 import { useActiveAccountDisplay } from "./hooks/useAccounts";
-import { useTimeClient } from "./hooks/useTimeClient";
+import { useProjects } from "./timeClient";
 
 function Command() {
-  const { data, isLoading } = useTimeClient().getProjects;
+  const { data, isLoading } = useProjects();
   const { label, showLabel } = useActiveAccountDisplay();
 
   const activeProjects = data?.projects?.filter((project) => !project.isCompleted) ?? [];

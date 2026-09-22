@@ -84,7 +84,7 @@ export function getProviderForAccount(id: AccountId) {
   return id === "account-2" ? provider2 : provider1;
 }
 
-export const GetAccessToken = () => {
+export const getAccessToken = () => {
   if (!accessToken) {
     throw new Error("Access token must be used when authenticated.");
   }

@@ -1,5 +1,13 @@
 # time Changelog
 
+## [Raycast 2 API] - {PR_MERGE_DATE}
+
+- Migrated to the Raycast 2 API (`@raycast/api` 2.x, `@raycast/utils` 2.x)
+- Declared `platforms` in the manifest, the extension now also runs on Windows
+- Opening the time records or the create form no longer refetches the project list
+- Creating, updating and deleting a time record now report a failed request instead of always showing a success toast
+- The Delete Time Record and Remove Account shortcuts now have a Windows binding next to the macOS one
+
 ## [Dependency Updates] - 2026-07-15
 
 - Updated all dependencies

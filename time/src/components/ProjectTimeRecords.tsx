@@ -1,7 +1,7 @@
 import { Action, ActionPanel, Alert, confirmAlert, Icon, Image, List } from "@raycast/api";
 import { orderBy, sum, groupBy } from "es-toolkit";
 import { DateTime } from "luxon";
-import { useTimeClient } from "../hooks/useTimeClient";
+import { deleteTimeRecord, useTimeRecords } from "../timeClient";
 import { Project } from "../types/Project";
 import { CreateUpdateTimeRecord } from "./CreateUpdateTimeRecord";
 import { TimeRecord } from "../types/TimeRecord";
@@ -11,8 +11,7 @@ type ProjectTimeRecordsProps = {
 };
 
 export const ProjectTimeRecords: React.FC<ProjectTimeRecordsProps> = ({ project }) => {
-  const { getTimeRecords, deleteTimeRecord } = useTimeClient();
-  const { data, isLoading, revalidate } = getTimeRecords(project.id);
+  const { data, isLoading, revalidate } = useTimeRecords(project.id);
 
   const orderedTimeRecords = orderBy(data?.timeRecords ?? [], ["date"], ["desc"]);
   const groupedTimeRecords = groupBy<TimeRecord, string>(orderedTimeRecords, (timeRecord) => {
@@ -85,7 +84,10 @@ export const ProjectTimeRecords: React.FC<ProjectTimeRecordsProps> = ({ project 
                     />
                     <Action
                       style={Action.Style.Destructive}
-                      shortcut={{ modifiers: ["cmd"], key: "backspace" }}
+                      shortcut={{
+                        macOS: { modifiers: ["cmd"], key: "backspace" },
+                        Windows: { modifiers: ["ctrl"], key: "backspace" },
+                      }}
                       title="Delete Time Record"
                       icon={Icon.Trash}
                       onAction={() => onDeleteTimeRecord(timeRecord.id)}

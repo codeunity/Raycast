@@ -38,7 +38,7 @@ export const ProjectListItem: React.FC<ProjectListItemProps> = ({ project }) => 
           />
           <Action.OpenInBrowser
             title="Open in Time"
-            url={`${getPreferenceValues().timeUrl}/timetracker?projectId=${project.id}`}
+            url={`${getPreferenceValues<Preferences.Projects>().timeUrl}/timetracker?projectId=${project.id}`}
             icon={Icon.Globe}
           />
         </ActionPanel>

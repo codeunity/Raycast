@@ -1,7 +1,7 @@
 import { Action, ActionPanel, Form, useNavigation } from "@raycast/api";
 import { FormValidation, useForm } from "@raycast/utils";
 import { DateTime } from "luxon";
-import { useTimeClient } from "../hooks/useTimeClient";
+import { createTimeRecord, updateTimeRecord } from "../timeClient";
 import { Project } from "../types/Project";
 import { TimeRecord } from "../types/TimeRecord";
 
@@ -26,7 +26,6 @@ export const CreateUpdateTimeRecord: React.FC<CreateTimeRecordProps> = ({
   revalidate,
 }) => {
   const { pop } = useNavigation();
-  const { createTimeRecord, updateTimeRecord } = useTimeClient();
 
   const { handleSubmit, itemProps } = useForm<TimeRecordValues>({
     async onSubmit() {
