@@ -1,18 +1,10 @@
-import { Action, ActionPanel, getPreferenceValues, Icon, List } from "@raycast/api";
+import { Action, ActionPanel, Icon, List } from "@raycast/api";
 
-import { OpenPreferencesView } from "./components/OpenPreferencesView";
-import { useExivoClient } from "./hooks/useExivoClient";
-import { ExivoPreferences } from "./types/ExivoPreferences";
-import { getDoorModeTitle } from "./utils";
+import { setMode, unlock, useExivoComponents } from "./exivoClient";
+import { getDoorModeTitle } from "./utils/doorMode";
 
 export default function Command() {
-  const { getExivoComponents, unlock, setMode } = useExivoClient();
-  const { data: components, isLoading: loadingComponents, revalidate: revalidateComponents } = getExivoComponents();
-
-  const preferences = getPreferenceValues<ExivoPreferences>();
-  if (!preferences.clientId || !preferences.clientSecret || !preferences.siteId) {
-    return <OpenPreferencesView />;
-  }
+  const { data: components, isLoading: loadingComponents, revalidate: revalidateComponents } = useExivoComponents();
 
   return (
     <List isLoading={loadingComponents}>

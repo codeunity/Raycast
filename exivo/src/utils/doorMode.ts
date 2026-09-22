@@ -1,4 +1,4 @@
-import { ExivoComponentMode } from "./types/ExivoComponent";
+import { ExivoComponentMode } from "../types/ExivoComponent";
 
 export const getDoorModeTitle = (mode: ExivoComponentMode) => {
   switch (mode) {
