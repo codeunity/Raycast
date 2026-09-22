@@ -5,6 +5,7 @@
     "lib": ["ES2023"],
     "module": "commonjs",
     "target": "es2021",
+    "types": ["node", "react"],
     "strict": true,
     "isolatedModules": true,
     "esModuleInterop": true,

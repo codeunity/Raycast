@@ -13,10 +13,9 @@ import {
 } from "./gatewayDeviceUtils";
 import { withDaikinAccessToken } from "./hooks/onectaAuth";
 import { useGatewayDevices } from "./hooks/useGatewayDevices";
-import { useOnectaClient } from "./hooks/useOnectaClient";
+import { disableCooling, disablePowerfulMode, enableCooling, enablePowerfulMode } from "./onectaClient";
 
 function Command() {
-  const { enableCooling, disableCooling, enablePowerfulMode, disablePowerfulMode } = useOnectaClient();
   const { data, isLoading, revalidate: revalidateGatewayDevices } = useGatewayDevices();
   const [waitingForReload, setWaitingForReload] = useState(false);
 

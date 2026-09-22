@@ -1,6 +1,6 @@
 import { Action, ActionPanel, Form, Icon, useNavigation } from "@raycast/api";
 import React, { useState } from "react";
-import { useOnectaClient } from "../hooks/useOnectaClient";
+import { setOperationMode } from "../onectaClient";
 
 const modes = [
   { label: "Cooling", value: "cooling", icon: Icon.Snowflake },
@@ -16,7 +16,6 @@ export const SetModeForm: React.FC<{
   currentMode: string;
   onModeSet: () => void;
 }> = ({ deviceId, currentMode, onModeSet }) => {
-  const { setOperationMode } = useOnectaClient();
   const { pop } = useNavigation();
   const [selectedMode, setSelectedMode] = useState(currentMode);
 

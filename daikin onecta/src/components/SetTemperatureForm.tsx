@@ -1,6 +1,6 @@
 import { Action, ActionPanel, Form, useNavigation } from "@raycast/api";
 import React from "react";
-import { useOnectaClient } from "../hooks/useOnectaClient";
+import { setTargetRoomTemperature } from "../onectaClient";
 
 const temperatures = [
   "18",
@@ -39,7 +39,6 @@ export const SetTemperatureForm: React.FC<{
   currentTemperature: string;
   onTemperatureSet: () => void;
 }> = ({ deviceId, currentTemperature, onTemperatureSet }) => {
-  const { setTargetRoomTemperature } = useOnectaClient();
   const { pop } = useNavigation();
 
   const onSubmit = async (values: { temperature: string }) => {

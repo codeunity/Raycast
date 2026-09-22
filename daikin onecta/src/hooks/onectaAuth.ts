@@ -30,7 +30,7 @@ export const provider = new OAuthService({
 
 export const withDaikinAccessToken = withAccessToken(provider);
 
-export const GetAcessToken = () => {
+export const getAccessToken = () => {
   if (!accessToken) {
     throw new Error("Access token must be used when authenticated.");
   }

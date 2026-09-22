@@ -1,7 +1,6 @@
-import { showToast, Toast } from "@raycast/api";
-import { useFetch } from "@raycast/utils";
+import { showFailureToast, useFetch } from "@raycast/utils";
 import { GatewayDevice } from "../types/GatewayDevice";
-import { GetAcessToken } from "./onectaAuth";
+import { getAccessToken } from "./onectaAuth";
 
 const OnectaConfig = {
   baseUrl: "https://api.onecta.daikineurope.com/v1",
@@ -11,14 +10,10 @@ export const useGatewayDevices = () =>
   useFetch<GatewayDevice[]>(`${OnectaConfig.baseUrl}/gateway-devices`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${GetAcessToken().accessToken}`,
+      Authorization: `Bearer ${getAccessToken().accessToken}`,
       "Content-Type": "application/json",
     },
     onError: (error) => {
-      showToast({
-        style: Toast.Style.Failure,
-        title: "Failed to load gateway devices",
-        message: error.message,
-      });
+      showFailureToast(error, { title: "Failed to load gateway devices" });
     },
   });
