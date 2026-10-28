@@ -1,5 +1,10 @@
 # fastbill Changelog
 
+## [Mark as Paid Fixes] - {PR_MERGE_DATE}
+
+- Failing to mark an invoice as paid now shows the error message returned by FastBill
+- Submitting the form without touching the preselected date marks the invoice as paid instead of doing nothing
+
 ## [Raycast 2 API] - {PR_MERGE_DATE}
 
 - Migrated to the Raycast 2 API (`@raycast/api` 2.x, `@raycast/utils` 2.x)

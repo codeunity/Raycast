@@ -49,8 +49,11 @@ export const markInvoiceAsPaid = async (invoiceId: string, paidDate: Date) => {
       }),
     });
 
-    if (!response.ok) {
-      throw new Error(`${response.status} ${response.statusText}`);
+    const body = (await response.json().catch(() => undefined)) as { RESPONSE?: { ERRORS?: string[] } } | undefined;
+    const errors = body?.RESPONSE?.ERRORS ?? [];
+
+    if (!response.ok || errors.length > 0) {
+      throw new Error(errors.length > 0 ? errors.join(", ") : `HTTP ${response.status} ${response.statusText}`);
     }
 
     toast.style = Toast.Style.Success;

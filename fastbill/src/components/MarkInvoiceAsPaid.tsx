@@ -9,7 +9,7 @@ type MarkInvoiceAsPaidProps = {
 };
 
 export const MarkInvoiceAsPaid: React.FC<MarkInvoiceAsPaidProps> = ({ invoice, onMarkedAsPaid }) => {
-  const [date, setDate] = useState<Date | null>(null);
+  const [date, setDate] = useState<Date | null>(new Date());
   const { pop } = useNavigation();
 
   async function handleSubmit() {
