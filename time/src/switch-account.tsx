@@ -1,5 +1,5 @@
 import { Action, ActionPanel, Color, Icon, List } from "@raycast/api";
-import { AccountId } from "./hooks/auth0";
+import { AccountId } from "./hooks/keycloak";
 import { useAccounts } from "./hooks/useAccounts";
 
 export default function SwitchAccount() {

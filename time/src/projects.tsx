@@ -2,7 +2,7 @@ import { Detail, List } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
 import { orderBy } from "es-toolkit";
 import { ProjectListItem } from "./components/ProjectListItem";
-import { getActiveAccountId, withAccount1Token, withAccount2Token } from "./hooks/auth0";
+import { getActiveAccountId, withAccount1Token, withAccount2Token } from "./hooks/keycloak";
 import { useActiveAccountDisplay } from "./hooks/useAccounts";
 import { useProjects } from "./timeClient";
 

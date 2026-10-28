@@ -8,7 +8,7 @@ import {
   oauthClient2,
   provider2,
   setActiveAccountId,
-} from "./auth0";
+} from "./keycloak";
 
 export type AccountInfo = {
   id: AccountId;

@@ -1,6 +1,10 @@
 # time Changelog
 
-## [Raycast 2 API] - {PR_MERGE_DATE}
+## [Keycloak Login] - 2026-10-28
+
+- Sign in with Keycloak instead of Auth0, existing accounts have to sign in again
+
+## [Raycast 2 API] - 2026-10-28
 
 - Migrated to the Raycast 2 API (`@raycast/api` 2.x, `@raycast/utils` 2.x)
 - Declared `platforms` in the manifest, the extension now also runs on Windows

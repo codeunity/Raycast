@@ -1,7 +1,7 @@
 import { showToast, Toast } from "@raycast/api";
 import { showFailureToast, useFetch } from "@raycast/utils";
 import { DateTime } from "luxon";
-import { getAccessToken } from "./hooks/auth0";
+import { getAccessToken } from "./hooks/keycloak";
 import { CreateTimeRecord } from "./types/CreateTimeRecord";
 import { ProjetsResponse } from "./types/Project";
 import { TimeRecordsResponse } from "./types/TimeRecord";

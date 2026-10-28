@@ -1,19 +1,20 @@
 import { LocalStorage, OAuth } from "@raycast/api";
 import { OAuthService, withAccessToken } from "@raycast/utils";
 
-const clientId = "7stgDJlS9Gm1NzYGZVAQSgtVHmXHtpZ0";
-const baseUrl = "https://login.timeunity.de";
-const audience = "https://backend.timeunity.de/api";
+const clientId = "raycast";
+const baseUrl = "https://login.codeunity.de";
+const realm = "codeunity";
 const scope = ["openid", "profile", "email", "offline_access"].join(" ");
+
+const openIdConnectUrl = `${baseUrl}/realms/${realm}/protocol/openid-connect`;
 
 const sharedOAuthConfig = {
   clientId,
   scope,
-  authorizeUrl: `${baseUrl}/authorize`,
-  tokenUrl: `${baseUrl}/oauth/token`,
-  refreshTokenUrl: `${baseUrl}/oauth/token`,
+  authorizeUrl: `${openIdConnectUrl}/auth`,
+  tokenUrl: `${openIdConnectUrl}/token`,
+  refreshTokenUrl: `${openIdConnectUrl}/token`,
   bodyEncoding: "url-encoded" as const,
-  extraParameters: { audience, response_type: "code", code_challenge_method: "S256", response_mode: "query" },
 };
 
 export type AccountId = "account-1" | "account-2";
@@ -24,17 +25,17 @@ export let accessToken: string | undefined;
 export const oauthClient1 = new OAuth.PKCEClient({
   redirectMethod: OAuth.RedirectMethod.Web,
   providerName: "codeunity time",
-  providerIcon: "auth0-logo.svg",
+  providerIcon: "extension-icon.png",
   description: "Connect your account",
-  providerId: "auth0", // Keep original ID so existing stored tokens are not invalidated
+  providerId: "keycloak",
 });
 
 export const oauthClient2 = new OAuth.PKCEClient({
   redirectMethod: OAuth.RedirectMethod.Web,
   providerName: "codeunity time",
-  providerIcon: "auth0-logo.svg",
+  providerIcon: "extension-icon.png",
   description: "Connect your second account",
-  providerId: "auth0-account-2",
+  providerId: "keycloak-account-2",
 });
 
 export const provider1 = new OAuthService({
@@ -49,7 +50,7 @@ export const provider1 = new OAuthService({
 // so the user isn't silently signed in as their existing account.
 export const addProvider1 = new OAuthService({
   ...sharedOAuthConfig,
-  extraParameters: { ...sharedOAuthConfig.extraParameters, prompt: "login" },
+  extraParameters: { prompt: "login" },
   client: oauthClient1,
   onAuthorize: ({ token }) => {
     accessToken = token;
@@ -58,9 +59,9 @@ export const addProvider1 = new OAuthService({
 
 export const provider2 = new OAuthService({
   ...sharedOAuthConfig,
-  // Force Auth0 to show the login screen so the user can enter different credentials,
+  // Force Keycloak to show the login screen so the user can enter different credentials,
   // rather than silently reusing the existing browser session from account 1.
-  extraParameters: { ...sharedOAuthConfig.extraParameters, prompt: "login" },
+  extraParameters: { prompt: "login" },
   client: oauthClient2,
   onAuthorize: ({ token }) => {
     accessToken = token;
